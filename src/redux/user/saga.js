@@ -1,7 +1,19 @@
-import { all, takeEvery } from "redux-saga/effects";
+import { all, takeEvery, call, put, takeLatest } from "redux-saga/effects";
+import { fetchUsersSuccess, fetchUsersFailure } from "./slice";
+import axios from "axios";
 
-function* fetchUsers() {
-    console.log("dentro do saga");
+function* fetchUsersSaga() {
+    try {
+        const response = yield call(
+            axios.get,
+            `https://jsonplaceholder.typicode.com/users/`
+        );
+        yield put(fetchUsersSuccess(response.data));
+    } catch (error) {
+        yield put(fetchUsersFailure(error.message));
+    }
 }
 
-export default all([takeEvery("user/fetchUsers", fetchUsers)]);
+export default function* rootSaga() {
+    yield all([takeLatest("user/fetchUsers", fetchUsersSaga)]);
+}
