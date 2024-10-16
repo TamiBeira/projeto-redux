@@ -23,12 +23,6 @@ export const userSlice = createSlice({
                 },
             };
         },
-        logoutUser: (state) => {
-            return {
-                ...state,
-                user: null,
-            };
-        },
         addAddress: (state, action) => {
             if (
                 action.payload.location === "" ||
@@ -53,8 +47,23 @@ export const userSlice = createSlice({
                 },
             };
         },
+        deleteAddress: (state) => {
+            return {
+                user: {
+                    ...state.user,
+                    address: null,
+                },
+            };
+        },
+        logoutUser: (state) => {
+            return {
+                ...state,
+                user: null,
+            };
+        },
     },
 });
 
-export const { createUser, logoutUser, addAddress } = userSlice.actions;
+export const { createUser, addAddress, deleteAddress, logoutUser } =
+    userSlice.actions;
 export default userSlice.reducer;
